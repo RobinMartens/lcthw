@@ -39,49 +39,7 @@ error:
 	return 0;
 }
 
-void *help_merge_sort(List *a, 
-						List *b, 
-						List_compare *comp) {
-	
-	// if both list Nodes have more than 1 elements, recur
-	if((List_count(a) <= 1) || (List_count(b) <= 1)){
-		// merge and return
-		List_extend(a,b);	
-
-	}
-
-	if(List_count(a) == 0) {
-		return b;
-
-	} else if(list_count(b) == 0) {
-		return a;
-
-	}
-
-	// finally merge
-	List *one;
-	List *two;
-	List *out = List_create();
-
-	
-	while((one->next != NULL) && (two->next != NULL)) {
-
-		if(one->next != NULL) {
-			List_extend(two);		
-		}
-
-	}
-
-}
-
 void *List_merge_sort(List *list, List_compare *comp) {
-
-
-}
-
-
-
-void *List_merge(List *list, List_compare *comp) {
 
 	// you have a list; obtain two sorted sub-lists
 	List *upper;

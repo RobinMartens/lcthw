@@ -6,6 +6,26 @@ static List *list = NULL;
 char *test1 = "test1 data";
 char *test2 = "test2 data";
 char *test3 = "test3 data";
+char *test4 = "test4 data";
+
+char *test_split(void) {
+	List *source = List_create();
+	List_push(source, test1);
+	List_push(source, test2);
+	List_push(source, test3);
+	List_push(source, test4);
+
+	List *left = list_create();
+	List *right = list_create();
+
+	int rc = List_split(source, left, right);
+
+	mu_assert(rc, "Splitting list failed");
+	mu_assert(List_pop(left) == test1, "First element of left sublist is incorrect.");
+	mu_assert(List_pop(right) == test3, "First element of right sublist is incorrect.");
+
+	return NULL;
+}
 
 char *test_create(void) {
 	list = List_create();
@@ -43,6 +63,7 @@ char *test_push_pop(void) {
 
 	return NULL;
 }
+
 
 char *test_unshift(void) {
 	List_unshift(list, test1);

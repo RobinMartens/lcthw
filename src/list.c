@@ -109,3 +109,35 @@ void *List_remove(List *list, ListNode *node) {
 error:
 	return result;
 }
+
+int List_split(List *source, List *left, List *right) {
+
+	// hand half the elements to the left list, half to the other
+	int n = List_count(source);
+	int half = n/2;		
+	int count = 0;
+	void *elm;
+	
+	// hand half of the elements to the first sub-list
+	for(elm = List_pop(source), count = 0; 
+		count < half; 
+		elm = List_pop(source), count++) {
+			
+			List_push(left, elm);
+	}
+
+	// hand half of the elements to the second sub-list
+	while((elm = List_pop(source)) != NULL) {
+
+		List_push(right, elm);
+	}
+	
+	// destroy the old list
+	List_destroy(source);
+
+	return 1;
+
+// TODO: Implement error checking
+error:
+	return 0;
+}

@@ -34,8 +34,7 @@ void *List_shift(List *list);
 
 void *List_remove(List *list, ListNode *node);
 
-// append all elements from the second list
-void *List_extend(List *source, List *target);
+int List_split(List *source, List *left, List *right);
 
 #define LIST_FOREACH(L, S, M, V) ListNode *_node = NULL;\
 	ListNode *V = NULL;\
