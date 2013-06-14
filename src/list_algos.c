@@ -1,4 +1,5 @@
 #include "list_algos.h"
+#include "dbg.h"
 
 int List_bubble_sort(List *list, List_compare *comp) {
 
@@ -32,6 +33,8 @@ int List_bubble_sort(List *list, List_compare *comp) {
 		}
 	}while(!is_sorted);
 
+	check(is_sorted, "Failed to sort list");
+
 	return 1;
 
 //TODO: Implement error checking
@@ -39,7 +42,7 @@ error:
 	return 0;
 }
 
-void *List_merge_sort(List *list, List_compare *comp) {
+List *List_merge_sort(List *list, List_compare *comp) {
 
 	// you have a list; obtain two sorted sub-lists
 	List *upper;
@@ -48,8 +51,10 @@ void *List_merge_sort(List *list, List_compare *comp) {
 	// TODO: Implement list_split
 	List_split(list, upper, lower);
 
-	List *left = List_merge(upper, comp);
-	List *right = List_merge(lower, comp);
+	List *left = List_merge_sort(upper, comp);
+	List *right = List_merge_sort(lower, comp);
+	int rc = List_split(list, left, right);
+	check(rc, "Failed to split list");
 
 	// you have two sorted sub-lists; merge them!
 	void *a;
@@ -60,8 +65,8 @@ void *List_merge_sort(List *list, List_compare *comp) {
 
 	while(1) {
 		// update the condidate
-		a = List_pop(List *left);
-		b = List_pop(List *right);
+		a = List_pop(left);
+		b = List_pop(right);
 
 		// check if one of the lists is exhausted
 		if(a == NULL) {

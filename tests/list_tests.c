@@ -15,8 +15,8 @@ char *test_split(void) {
 	List_push(source, test3);
 	List_push(source, test4);
 
-	List *left = list_create();
-	List *right = list_create();
+	List *left = List_create();
+	List *right = List_create();
 
 	int rc = List_split(source, left, right);
 
