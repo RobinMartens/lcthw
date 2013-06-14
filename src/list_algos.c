@@ -45,8 +45,8 @@ error:
 List *List_merge_sort(List *list, List_compare *comp) {
 
 	// you have a list; obtain two sorted sub-lists
-	List *upper;
-	List *lower;
+	List *upper = List_create();
+	List *lower = List_create(); 
 
 	// TODO: Implement list_split
 	List_split(list, upper, lower);

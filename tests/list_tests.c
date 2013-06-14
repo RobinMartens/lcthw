@@ -21,8 +21,8 @@ char *test_split(void) {
 	int rc = List_split(source, left, right);
 
 	mu_assert(rc, "Splitting list failed");
-	mu_assert(List_pop(left) == test1, "First element of left sublist is incorrect.");
-	mu_assert(List_pop(right) == test3, "First element of right sublist is incorrect.");
+	mu_assert(List_pop(left) == test3, "First element of left sublist is incorrect.");
+	mu_assert(List_pop(right) == test1, "First element of right sublist is incorrect.");
 
 	return NULL;
 }
