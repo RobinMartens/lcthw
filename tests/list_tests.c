@@ -115,6 +115,9 @@ char *all_tests(void) {
 	mu_run_test(test_shift);
 	mu_run_test(test_destroy);
 
+	// add custom tests
+	mu_run_test(test_split);
+
 	return NULL;
 }
 
