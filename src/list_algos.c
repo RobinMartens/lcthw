@@ -1,7 +1,9 @@
 #include "list_algos.h"
 #include "dbg.h"
 
-int List_bubble_sort(List *list, List_compare *comp) {
+int List_bubble_sort(List *list, List_compare comp) {
+
+	debug("Hello, world!");
 
 	// keep on traversing the list until it is sorted
 	int is_sorted;
@@ -10,6 +12,7 @@ int List_bubble_sort(List *list, List_compare *comp) {
 		is_sorted = 1;
 
 		LIST_FOREACH(list, first, next, cur) {
+
 			// if we have reached the last element of the list, break
 			if(cur->next == NULL) break;
 
@@ -35,14 +38,14 @@ int List_bubble_sort(List *list, List_compare *comp) {
 
 	check(is_sorted, "Failed to sort list");
 
-	return 1;
+	return 0;
 
 //TODO: Implement error checking
 error:
-	return 0;
+	return 1;
 }
 
-List *List_merge_sort(List *list, List_compare *comp) {
+List *List_merge_sort(List *list, List_compare comp) {
 
 	// you have a list; obtain two sorted sub-lists
 	List *upper = List_create();
