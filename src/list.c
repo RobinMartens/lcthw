@@ -118,10 +118,6 @@ int List_split(List *source, List *left, List *right) {
 	int count = 0;
 	void *elm;
 
-	debug("half:", half);
-	fprintf(stderr, "Hello, world!\n");
-	fprintf(stderr, "half: %d\n", half);
-	
 	// hand half of the elements to the first sub-list
 	for(elm = List_pop(source), count = 0; 
 		count < half; 
@@ -137,6 +133,7 @@ int List_split(List *source, List *left, List *right) {
 	}
 	
 	// destroy the old list
+	printf("List_destory(source)\n");
 	List_destroy(source);
 
 	check(1, "trivial");
