@@ -18,7 +18,7 @@ DArray *DArray_create(size_t element_size, size_t initial_max) {
 
 error:
 	if(array) free(array);
-	return NUll;
+	return NULL;
 }
 
 void DArray_clear(DArray *array) {
@@ -48,14 +48,27 @@ error:
 	return -1;
 }
 
+int DArray_expand(DArray *array) {
+	size_t old_max = array->max;
+	check(DArray_resize(array, array->max + array->expand_rate) == 0,
+			"Failed to expand array to new size: %d",
+			array->max + (int)array->expand_rate);
+
+	memset(array->contents + old_max, 0, array->expand_rate + 1);
+	return 0;
+
+error:
+	return -1;
+}
+
 int DArray_contract(DArray *array) {
-	int new_size array->end < (int)array->expand_rate ? \
+	int new_size = array->end < (int)array->expand_rate ? \
 								(int)array->expand_rate : array->end;
 
 	return DArray_resize(array, new_size + 1);
 }
 
-int DArray_destroy(DArray *array) {
+void DArray_destroy(DArray *array) {
 	if(array) {
 		if(array->contents) free(array->contents);
 		free(array);
@@ -72,7 +85,7 @@ int DArray_push(DArray *array, void *el) {
 	array->end++;
 
 	if(DArray_end(array) >= DArray_max(array)) {
-		return DArray_expend(array);
+		return DArray_expand(array);
 	} else {
 		return 0;
 	}
@@ -93,23 +106,3 @@ void *DArray_pop(DArray *array) {
 error:
 	return NULL;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

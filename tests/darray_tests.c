@@ -10,14 +10,14 @@ char *test_create(void) {
 	mu_assert(array != NULL, "DArray_create failed.");
 	mu_assert(array->contents != NULL, "contents are wrong in darray");
 	mu_assert(array->end == 0, "end isn't at the right spot");
-	mu_assert(array->element_size == sizeof(int) "element size is wrong.");
+	mu_assert(array->element_size == sizeof(int), "element size is wrong.");
 	mu_assert(array->max == 100, "wrong max length on initial size");
 
 	return NULL;
 }
 
 char *test_destroy(void) {
-	Darray_destroy(array);
+	DArray_destroy(array);
 
 	return NULL;
 }
@@ -34,7 +34,7 @@ char *test_new(void) {
 
 char *test_set(void) {
 	DArray_set(array, 0, val1);
-	DArray_set(array, 0, val2);
+	DArray_set(array, 1, val2);
 
 	return NULL;
 }
@@ -46,6 +46,22 @@ char *test_get(void) {
 	return NULL;
 }
 
+char *test_remove(void) {
+	int *val_check = DArray_remove(array, 0);
+	mu_assert(val_check != NULL, "Should not get NULL.");
+	mu_assert(*val_check == *val1, "Should get the first value.");
+	mu_assert(DArray_get(array, 0) == NULL, "Should be gone.");
+	DArray_free(val_check);
+
+	val_check = DArray_remove(array, 1);
+	mu_assert(val_check != NULL, "Should not get NULL.");
+	mu_assert(*val_check == *val2, "Should get the first value.");
+	mu_assert(DArray_get(array, 1) == NULL, "Should be gone.");
+	DArray_free(val_check);
+
+	return NULL;
+}
+
 char *test_expand_contract(void) {
 	int old_max = array->max;
 	DArray_expand(array);
@@ -53,11 +69,11 @@ char *test_expand_contract(void) {
 		"Wrong size after expand.");
 
 	DArray_contract(array);
-	mu_assert((unsigned int)array->max == expand_rate + 1,\
+	mu_assert((unsigned int)array->max == array->expand_rate + 1,\
 		"Should stay at the expand_rate at least.");
 
 	DArray_contract(array);
-	mu_assert((unsigned int)array->max == expand_rate + 1,\
+	mu_assert((unsigned int)array->max == array->expand_rate + 1,\
 		"Should stay at the expand_rate at least.");
 
 	return NULL;
@@ -79,6 +95,8 @@ char *test_push_pop(void) {
 		mu_assert(*val == i * 333, "Wrong value.");
 		DArray_free(val);
 	}
+
+	return NULL;
 }
 
 char *all_tests(void) {
