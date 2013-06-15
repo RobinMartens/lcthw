@@ -2,7 +2,8 @@
 #include <stdlib.h>
 
 #ifndef _quicksort_INITIAL_MAX
-#define _quicksort_INITIAL_MAX 
+#define _quicksort_INITIAL_MAX 5
+#endif
 
 int DArray_qsort(DArray *array, DArray_compare cmp) {
 	qsort(array->contents, DArray_count(array), sizeof(void *), cmp);
@@ -20,6 +21,10 @@ int DArray_mergesort(DArray *array, DArray_compare cmp) {
 /* My own implemenatation of quicksort */
 int DArray_quicksort(DArray *array, DArray_compare cmp) {
 
+// declare here for error handling
+DArray *less;
+DArray *more;
+
 	if(DArray_count(array) <= 1) {
 	// base-case: array is empty or singleton
 		return 0;
@@ -32,8 +37,8 @@ int DArray_quicksort(DArray *array, DArray_compare cmp) {
 		check(pivot != NULL, "pivot is NULL");
 
 		// make a list of larger and smaller elements
-		DArray *less DArray_create(sizeof(void *), _quicksort_INITIAL_MAX);
-		DArray *more DArray_create(sizeof(void *), _quicksort_INITIAL_MAX);
+		less = DArray_create(sizeof(void *), _quicksort_INITIAL_MAX);
+		more = DArray_create(sizeof(void *), _quicksort_INITIAL_MAX);
 		void *cur;
 		int i;
 
