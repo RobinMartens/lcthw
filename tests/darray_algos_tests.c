@@ -65,6 +65,7 @@ char *all_tests(void) {
 	mu_run_test(test_qsort);
 	mu_run_test(test_heapsort);
 	mu_run_test(test_mergesort);
+	mu_run_test(test_quicksort);
 
 	return NULL;
 }

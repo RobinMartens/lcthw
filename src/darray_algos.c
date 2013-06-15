@@ -20,25 +20,32 @@ int DArray_mergesort(DArray *array, DArray_compare cmp) {
 
 /* My own implemenatation of quicksort */
 int DArray_quicksort(DArray *array, DArray_compare cmp) {
+	debug( ">>> DArray_quicksort\n");
+	check(array != NULL, "array is NULL\n");
+	debug( "array: %p\n", array);
 
-// declare here for error handling
-DArray *less;
-DArray *more;
+	// declare here for error handling
+	DArray *less;
+	DArray *more;
 
 	if(DArray_count(array) <= 1) {
 	// base-case: array is empty or singleton
+		debug( "array less/equal 1\n");
 		return 0;
 
 	} else {
 		// recursive-case: array is longer than 1
+		debug( "array greater than 1\n");
 		
 		// pick a pivot
 		void *pivot = DArray_pop(array);
 		check(pivot != NULL, "pivot is NULL");
+		debug("length of array: %d", DArray_count(array));	
 
 		// make a list of larger and smaller elements
 		less = DArray_create(sizeof(void *), _quicksort_INITIAL_MAX);
 		more = DArray_create(sizeof(void *), _quicksort_INITIAL_MAX);
+		debug("create less and more");
 		void *cur;
 		int i;
 
@@ -48,11 +55,21 @@ DArray *more;
 
 			check(cur != NULL, "cur is NULL");
 
-			if(cmp(pivot, cur) < 0){
+			debug("comparing cur to pivot");
+			debug("cur: %s", (char *)cur);
+			debug("pivot: %s", (char *)pivot);
+			
+			debug("address of comparator: %p", cmp);
+			debug("cmp(&pivot, &cur): %d", cmp(&pivot, &cur));
+
+			if(cmp(&pivot, &cur) < 0){
+				debug("cur is less than the pivot");
 				DArray_push(less, cur);
 			}else{
+				debug("cur is more than the pivot");
 				DArray_push(more, cur);
 			}
+
 		}
 
 		// get lengths before
@@ -71,25 +88,22 @@ DArray *more;
 		
 		// at this point less and more are already sorted
 
-		// clear the old array
-		DArray_clear(array);
-		check(DArray_count(array) == 0, "failed to clear old array");
-
 		// write all elements back into the old array
-		for(i = 0, cur = DArray_first(less); 
+		int j;
+		for(j = 0, i = 0, cur = DArray_first(less); 
 			i < DArray_max(less); 
-			i++, cur = DArray_get(less, i)) {
+			j++, i++, cur = DArray_get(less, i)) {
 
-			DArray_push(array, cur);
+			DArray_set(array, j, cur);
 		}
 
-		DArray_push(array, pivot);
+		DArray_set(array, ++j, pivot);
 
 		for(i = 0, cur = DArray_first(more); 
 			i < DArray_max(more); 
-			i++, cur = DArray_get(more, i)) {
+			j++, i++, cur = DArray_get(more, i)) {
 
-			DArray_push(array, cur);
+			DArray_set(array, j, cur);
 		}
 
 		// check size
@@ -99,17 +113,17 @@ DArray *more;
 		check(s_array = (s_less + s_more + 1), "number of elements changes");
 
 		// destroy the temporary arrays
-		DArray_clear_destroy(less);
-		DArray_clear_destroy(more);
+		DArray_destroy(less);
+		DArray_destroy(more);
 
 		return 0;
 	}
 
 error:
 // free all allocated memory
-if(array) DArray_clear_destroy(array);
-if(less) DArray_clear_destroy(less);
-if(more) DArray_clear_destroy(more);
+if(array) DArray_destroy(array);
+if(less) DArray_destroy(less);
+if(more) DArray_destroy(more);
 
 return 1;
 }
