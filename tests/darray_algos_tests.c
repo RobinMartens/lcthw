@@ -48,11 +48,15 @@ char *test_qsort(void) {
 }
 
 char *test_heapsort(void) {
-	return run_sort_test(DArray_heapsort, "qsort");
+	return run_sort_test(DArray_heapsort, "heapsort");
 }
 
 char *test_mergesort(void) {
-	return run_sort_test(DArray_mergesort, "qsort");
+	return run_sort_test(DArray_mergesort, "mergesort");
+}
+
+char *test_quicksort(void) {
+	return run_sort_test(DArray_quicksort, "quicksort");
 }
 
 char *all_tests(void) {
