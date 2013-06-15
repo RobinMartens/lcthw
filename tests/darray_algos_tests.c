@@ -1,16 +1,16 @@
 #include "minunit.h"
 #include "../src/darray_algos.h"
 
-nt testcmp(char **a, char **b) {
+int testcmp(char **a, char **b) {
 	return strcmp(*a, *b);
 }
 
 DArray *create_words(void) {
 	DArray *result = DArray_create(0, 5);
-	char *words[] = "asdfasdf", "werwar", "13234", "asdfasfd", "oioj"};
+	char *words[] = {"asdfasdf", "werwar", "13234", "asdfasfd", "oioj"};
 	int i = 0;
 
-	for(i = 0; i < 5; ii++) {
+	for(i = 0; i < 5; i++) {
 		DArray_push(result, words[i]);
 	}
 
@@ -64,3 +64,5 @@ char *all_tests(void) {
 
 	return NULL;
 }
+
+RUN_TESTS(all_tests);
