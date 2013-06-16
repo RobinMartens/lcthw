@@ -54,7 +54,7 @@ static inline void radix_sort(short offset,
 
 	// fill dest with the right values in the right place
 	for(sp = source, end = source + max; sp < end; sp++) {
-		cap = count + ByteOf(sp, offset);
+		cp = count + ByteOf(sp, offset);
 		dest[*cp] = *sp;
 		++(*cp);
 	}
@@ -110,7 +110,7 @@ int RadixMap_delete(RadixMap *map, RMElement *el) {
 	check(map->end > 0, "There is nothing to delete.");
 	check(el != NULL, "Can't delete a NULL element.");
 
-	el->data.key = UNIT32_MAX;
+	el->data.key = UINT32_MAX;
 
 	if(map->end > 1) {
 		// don't both resorting map of 1 length

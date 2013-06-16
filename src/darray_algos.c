@@ -14,11 +14,9 @@ int DArray_heapsort(DArray *array, DArray_compare cmp) {
 	return heapsort(array->contents, DArray_count(array), sizeof(void *), cmp);
 }
 
-/*
 int DArray_mergesort(DArray *array, DArray_compare cmp) {
 	return mergesort(array->contents, DArray_count(array), sizeof(void *), cmp);
 }
-*/
 
 /* My own implemenatation of quicksort */
 int DArray_quicksort(DArray *array, DArray_compare cmp) {
@@ -148,6 +146,7 @@ return 1;
 }
 
 /* My own implementation of merge sort */
+/*
 int DArray_mergesort(DArray *array, DArray_compare cmp) {
 
 	// Base-case: List has length 1 or less
@@ -229,24 +228,4 @@ int DArray_mergesort(DArray *array, DArray_compare cmp) {
 
 
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+*/
