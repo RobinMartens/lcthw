@@ -14,9 +14,11 @@ int DArray_heapsort(DArray *array, DArray_compare cmp) {
 	return heapsort(array->contents, DArray_count(array), sizeof(void *), cmp);
 }
 
+/*
 int DArray_mergesort(DArray *array, DArray_compare cmp) {
 	return mergesort(array->contents, DArray_count(array), sizeof(void *), cmp);
 }
+*/
 
 /* My own implemenatation of quicksort */
 int DArray_quicksort(DArray *array, DArray_compare cmp) {
@@ -144,3 +146,107 @@ if(more) DArray_destroy(more);
 
 return 1;
 }
+
+/* My own implementation of merge sort */
+int DArray_mergesort(DArray *array, DArray_compare cmp) {
+
+	// Base-case: List has length 1 or less
+	if(DArray_count(array) <= 1) {
+		// do nothing to the array; just bottom out
+		return 1;
+	}
+
+	// Recursive case: list has length greater than 1
+	} else {
+		// split the array into two sub-arrays and sort them
+		DArray *left = DArray_create(_quicksort_INITIAL_MAX);
+		DArray *right = DArray_create(_quicksort_INITIAL_MAX);
+		check_mem(left);
+		check_mem(right);
+
+		void *cur;
+		int par;
+		for(cur = DArray_pop(array), par = 0;
+			cur != NULL;
+			cur = DArray_pop(array), par = ((par + 1) % 2);
+			check((par == 0) || (par == 1), "parity flag off: %d", par)) {
+
+			if(par == 0) {
+				DArray_push(left, cur);
+			} else {
+				DArray_push(right, cur);
+			}
+		}
+		// check that the old array is now empty
+		check(DArray_count(array) == 0, "old array not empty: %d", DArray_count(array));
+		// sort sub-lists
+		int rc1 = DArray_mergesort(DArray left, cmp);
+		int rc2 = DArray_mergesort(DArray right, cmp);
+
+		// merge sub-lists
+		void *L = DArray_pop(left);
+		void *R = DArray_pop(right);
+
+		while((L != NULL) && (R != NULL)){
+
+			if(cmp(L,R) < 0) {
+				DArray_push(array, L);
+				L = DArray_pop(left);
+			} else {
+				DArray_push(array, R);
+				R = DArray_pop(right);
+			}
+		}
+		check(!((L != NULL) && (R != NULL)), "Neither sub-list is empty");
+
+		// create alias for non-empty sub-list
+		DArray *rem;
+		void *V;
+
+		if(L != NULL) {
+			rem = left;
+		
+		} else if(R != NULL) {
+			rem = right;
+
+		} else {
+			rem = NULL;
+		}
+	
+		if(rem) {
+			for(V = DArray_pop(rem);
+					V != NULL;
+					V = DArray_pop(rem)) {
+
+				DArray_push(array, V);	
+			}
+		}
+
+
+
+	}
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
