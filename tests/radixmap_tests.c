@@ -96,9 +96,3 @@ char *all_tests(void) {
 }
 
 RUN_TESTS(all_tests);
-
-
-
-
-
-
