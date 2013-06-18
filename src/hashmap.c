@@ -5,7 +5,7 @@
 #include "bstrlib.h"
 
 static int default_compare(void *a, void *b) {
-	return bstrcmp((bstring)a, (bstringb));
+	return bstrcmp((bstring)a, (bstring)b);
 }
 
 /**
@@ -31,7 +31,7 @@ static uint32_t default_hash(void *a) {
 	return hash;
 }
 
-Hashmap *Hashmap_create(Hashmap_compare compare, Hashmap_hash) {
+Hashmap *Hashmap_create(Hashmap_compare compare, Hashmap_hash hash) {
 	Hashmap *map = calloc(1, sizeof(Hashmap));
 	check_mem(map);
 
@@ -62,11 +62,11 @@ void Hashmap_destroy(Hashmap *map) {
 				if(bucket) {
 					for(j = 0; j < DArray_count(bucket); j++) {
 						free(DArray_get(bucket, j));
-					{
+					}
 					DArray_destroy(bucket);
 				}
 			}
-			DArray_destroy(map->bucket);
+			DArray_destroy(map->buckets);
 		}
 
 		free(map);
@@ -94,7 +94,7 @@ static inline DArray *Hashmap_find_bucket(Hashmap *map, void *key,
 	check(bucket_n >= 0, "Invalid bucket found: %d", bucket_n);
 	*hash_out = hash; // store it for the return so the caller can us it
 	
-	DArray *bucket = Darray_get(map->buckets, bucket_n);
+	DArray *bucket = DArray_get(map->buckets, bucket_n);
 
 	if(!bucket && create) {
 		// new bucket, ste it up
@@ -109,6 +109,22 @@ error:
 	return NULL;
 }
 
+int Hashmap_set(Hashmap *map, void *key, void *data) {
+	uint32_t hash = 0;
+	DArray *bucket = Hashmap_find_bucket(map, key, 1, &hash);
+	check(bucket, "Error can't create bucket.");
+
+	HashmapNode *node = Hashmap_node_create(hash, key, data);
+	check_mem(node);
+
+	DArray_push(bucket, node);
+
+	return 0;
+
+error:
+	return -1;
+}
+	
 static inline int Hashmap_get_node(Hashmap *map, uint32_t hash,
 		DArray *bucket, void *key) {
 	int i = 0;
@@ -146,10 +162,10 @@ int Hashmap_traverse(Hashmap *map, Hashmap_traverse_cb traverse_cb) {
 	int rc = 0;
 
 	for(i = 0; i < DArray_count(map->buckets); i++) {
-		DArray *bucket = DArray-get(map->buckets, i);
+		DArray *bucket = DArray_get(map->buckets, i);
 		if(bucket) {
 			for(j = 0; j < DArray_count(bucket); j++) {
-				HashmapNode *node = DArray-get(bucket, j);
+				HashmapNode *node = DArray_get(bucket, j);
 				rc = traverse_cb(node);
 				if(rc != 0) return rc;
 			}
