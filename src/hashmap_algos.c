@@ -1,8 +1,8 @@
 #include "hashmap_algos.h"
 #include "bstrlib.h"
 
-const uint32_t FNV_PRIME = 16777619
-const uint32_t FNV_OFFSET_BASIS = 2166136261
+const uint32_t FNV_PRIME = 16777619;
+const uint32_t FNV_OFFSET_BASIS = 2166136261;
 
 uint32_t Hashmap_fnvla_hash(void *data) {
 	bstring s = (bstring)data;
@@ -10,7 +10,7 @@ uint32_t Hashmap_fnvla_hash(void *data) {
 	int i = 0;
 
 	for(i = 0; i < blength(s); i++) {
-		hash ^= bchare(s, i, o);
+		hash ^= bchare(s, i, 0);
 		hash *= FNV_PRIME;
 	}
 
@@ -20,7 +20,7 @@ uint32_t Hashmap_fnvla_hash(void *data) {
 const int MOD_ADLER = 65521;
 
 uint32_t Hashmap_adler32_hash(void *data) {
-	bstirng s = (bstring)data;
+	bstring s = (bstring)data;
 	uint32_t a = 1, b = 0;
 	int i = 0;
 

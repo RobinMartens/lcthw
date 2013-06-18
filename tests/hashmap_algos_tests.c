@@ -51,7 +51,7 @@ char *test_djb(void) {
 #define BUCKETS 100
 #define BUFFER_LEN 20
 #define NUM_KEYS BUCKETS * 1000 
-enum {ALGO_FNVLA, ALGO_ADLER32, ALGO_DJB}
+enum {ALGO_FNVLA, ALGO_ADLER32, ALGO_DJB};
 
 int gen_keys(DArray *keys, int num_keys) {
 	int i = 0;
@@ -61,7 +61,7 @@ int gen_keys(DArray *keys, int num_keys) {
 	struct bStream *stream = bsopen((bNread)fread, urand);
 	check(stream != NULL, "Failed to open /dev/urandom");
 
-	bstring key = bfromstr("");
+	bstring key = bfromcstr("");
 	int rc = 0;
 
 	// FNVla histogram
@@ -104,7 +104,7 @@ char *test_distribution(void) {
 	int stats[3][BUCKETS] = {{0}};
 	DArray *keys = DArray_create(0, NUM_KEYS);
 
-	mu_assert(gen_keys(keys, NUM_KEYS == 0, "Failed to generate random keys."));
+	mu_assert(gen_keys(keys, NUM_KEYS) == 0, "Failed to generate random keys.");
 	fill_distribution(stats[ALGO_FNVLA], keys, Hashmap_fnvla_hash);
 	fill_distribution(stats[ALGO_ADLER32], keys, Hashmap_adler32_hash);
 	fill_distribution(stats[ALGO_DJB], keys, Hashmap_djb_hash);
